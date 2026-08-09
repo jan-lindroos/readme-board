@@ -86,7 +86,7 @@
 		margin-top: 24px;
 		padding: 24px;
 		border: 1px solid var(--box-border);
-		border-radius: 6px;
+		border-radius: 12px;
 		background: var(--box-bg);
 	}
 
