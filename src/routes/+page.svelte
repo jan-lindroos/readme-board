@@ -1,7 +1,20 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import 'github-markdown-css/github-markdown.css';
 
 	const REPO = 'jan-lindroos/jan-lindroos';
+
+	const butterfly = document.createElement('video').canPlayType('video/quicktime')
+		? '/butterfly-pingpong.mov'
+		: '/butterfly-pingpong.webm';
+
+	let video: HTMLVideoElement;
+
+	onMount(() => {
+		video.play().catch(() => {
+			document.addEventListener('pointerdown', () => video.play(), { once: true });
+		});
+	});
 
 	const readme: Promise<string> = fetch(`https://api.github.com/repos/${REPO}/readme`, {
 		headers: { Accept: 'application/vnd.github.html+json' }
@@ -37,6 +50,9 @@
 		</div>
 	</div>
 </main>
+
+<!-- svelte-ignore a11y_media_has_caption -->
+<video bind:this={video} class="butterfly" src={butterfly} autoplay muted loop playsinline></video>
 
 <style>
 	:global(:root) {
@@ -104,5 +120,57 @@
 
 	.markdown-body :global(.anchor) {
 		display: none;
+	}
+
+	.butterfly {
+		--butterfly-width: min(280px, 60vw);
+		display: block;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		z-index: 10;
+		pointer-events: none;
+		width: var(--butterfly-width);
+		animation:
+			butterfly-cross 34s linear infinite,
+			butterfly-drift-y 19s ease-in-out infinite alternate;
+		mask-image:
+			linear-gradient(to right, transparent, #000 18%, #000 82%, transparent),
+			linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+		mask-composite: intersect;
+		-webkit-mask-image:
+			linear-gradient(to right, transparent, #000 18%, #000 82%, transparent),
+			linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+		-webkit-mask-composite: source-in;
+	}
+
+	@keyframes butterfly-cross {
+		from {
+			translate: calc(-1 * var(--butterfly-width));
+		}
+		to {
+			translate: 100vw;
+		}
+	}
+
+	@keyframes butterfly-drift-y {
+		0% {
+			transform: translateY(-4vh);
+		}
+		40% {
+			transform: translateY(-55vh);
+		}
+		65% {
+			transform: translateY(-22vh);
+		}
+		100% {
+			transform: translateY(-68vh);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.butterfly {
+			display: none;
+		}
 	}
 </style>
