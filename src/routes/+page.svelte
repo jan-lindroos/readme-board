@@ -35,7 +35,7 @@
 				>jan-lindroos<span class="sep">/</span>README.md</a
 			>
 			<span class="aside">
-				(click for github; linkedin
+				(click for GitHub; LinkedIn
 				<a href="https://www.linkedin.com/in/jan-lindroos/">here</a>)
 			</span>
 		</div>
@@ -49,6 +49,7 @@
 			{/await}
 		</div>
 	</div>
+	<div class="copyright">© {new Date().getFullYear()} Jan Lindroos</div>
 </main>
 
 <!-- svelte-ignore a11y_media_has_caption -->
@@ -115,6 +116,16 @@
 	}
 
 	.sep {
+		color: var(--box-fg-muted);
+	}
+
+	.copyright {
+		margin-top: 16px;
+		font-family:
+			'Monaspace Neon', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
+			'Liberation Mono', monospace;
+		font-size: 12px;
+		font-weight: 400;
 		color: var(--box-fg-muted);
 	}
 
