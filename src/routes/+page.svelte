@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import 'github-markdown-css/github-markdown.css';
 
 	const REPO = 'jan-lindroos/jan-lindroos';
@@ -9,12 +8,7 @@
 		: '/butterfly-pingpong.webm';
 
 	let video: HTMLVideoElement;
-
-	onMount(() => {
-		video.play().catch(() => {
-			document.addEventListener('pointerdown', () => video.play(), { once: true });
-		});
-	});
+	let playing = $state(false);
 
 	const readme: Promise<string> = fetch(`https://api.github.com/repos/${REPO}/readme`, {
 		headers: { Accept: 'application/vnd.github.html+json' }
@@ -52,8 +46,25 @@
 	<div class="copyright">© {new Date().getFullYear()} Jan Lindroos</div>
 </main>
 
+<svelte:document
+	onpointerdown={() => {
+		if (video.paused) video.play().catch(() => {});
+	}}
+/>
+
 <!-- svelte-ignore a11y_media_has_caption -->
-<video bind:this={video} class="butterfly" src={butterfly} autoplay muted loop playsinline></video>
+<video
+	bind:this={video}
+	class="butterfly"
+	class:playing
+	src={butterfly}
+	autoplay
+	muted
+	loop
+	playsinline
+	onplaying={() => (playing = true)}
+	onpause={() => (playing = false)}
+></video>
 
 <style>
 	:global(:root) {
@@ -141,6 +152,7 @@
 		left: 0;
 		z-index: 10;
 		pointer-events: none;
+		opacity: 0;
 		width: var(--butterfly-width);
 		animation:
 			butterfly-cross 34s linear infinite,
@@ -153,6 +165,10 @@
 			linear-gradient(to right, transparent, #000 18%, #000 82%, transparent),
 			linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
 		-webkit-mask-composite: source-in;
+	}
+
+	.butterfly.playing {
+		opacity: 1;
 	}
 
 	@keyframes butterfly-cross {
