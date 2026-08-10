@@ -78,7 +78,7 @@
 	}
 
 	main {
-		max-width: 800px;
+		max-width: 720px;
 		margin: 0 auto;
 		padding: 0 1rem 4rem;
 	}
