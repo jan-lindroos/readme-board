@@ -29,8 +29,8 @@
 				>jan-lindroos<span class="sep">/</span>README.md</a
 			>
 			<span class="aside">
-				(click for GitHub; LinkedIn
-				<a href="https://www.linkedin.com/in/jan-lindroos/">here</a>)
+				(click for GitHub;
+				<a href="https://www.linkedin.com/in/jan-lindroos/">LinkedIn</a>; jan@lindroos.co.uk)
 			</span>
 		</div>
 		<div class="markdown-body">
