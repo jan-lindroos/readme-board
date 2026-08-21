@@ -3,6 +3,9 @@
 
 	const REPO = 'jan-lindroos/jan-lindroos';
 
+	// Old Firefox renders the webm's alpha channel as black, so skip it entirely.
+	const isFirefox = navigator.userAgent.includes('Firefox');
+
 	const butterfly = document.createElement('video').canPlayType('video/quicktime')
 		? '/butterfly-pingpong.mov'
 		: '/butterfly-pingpong.webm';
@@ -48,23 +51,25 @@
 
 <svelte:document
 	onpointerdown={() => {
-		if (video.paused) video.play().catch(() => {});
+		if (video?.paused) video.play().catch(() => {});
 	}}
 />
 
-<!-- svelte-ignore a11y_media_has_caption -->
-<video
-	bind:this={video}
-	class="butterfly"
-	class:playing
-	src={butterfly}
-	autoplay
-	muted
-	loop
-	playsinline
-	onplaying={() => (playing = true)}
-	onpause={() => (playing = false)}
-></video>
+{#if !isFirefox}
+	<!-- svelte-ignore a11y_media_has_caption -->
+	<video
+		bind:this={video}
+		class="butterfly"
+		class:playing
+		src={butterfly}
+		autoplay
+		muted
+		loop
+		playsinline
+		onplaying={() => (playing = true)}
+		onpause={() => (playing = false)}
+	></video>
+{/if}
 
 <style>
 	:global(:root) {
